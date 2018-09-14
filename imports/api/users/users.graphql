@@ -1,0 +1,29 @@
+extend type Query {
+    User(id: ID!): User
+    allUsers(page: Int, perPage: Int, sortField: String, sortOrder: String, filter: String): [User]
+    _allUsersMeta(page: Int, perPage: Int, sortField: String, sortOrder: String, filter: String): ListMetadata
+}
+extend type Mutation {
+    deleteUser(id: ID!): User
+}
+type User {
+  _id: ID
+  id:String
+  email: String
+  userName: String
+  picture:[String] 
+  request:[Request]
+  rating:[Rating]
+}
+type UserFilter {
+    q: String
+    id: ID
+    title: String
+    views: Int
+    views_lt: Int
+    views_lte: Int
+    views_gt: Int
+    views_gte: Int
+    request_id: ID
+}
+

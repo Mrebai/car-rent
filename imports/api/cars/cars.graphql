@@ -1,0 +1,67 @@
+extend type Query {
+    Car(id: ID!): Car
+    allCars(page: Int, perPage: Int, sortField: String, sortOrder: String, ): [Car]
+    _allCarsMeta(page: Int, perPage: Int, sortField: String, sortOrder: String,): ListMetadata
+}
+type Mutation {
+    createCar(
+    name:String,
+    model:String,
+    description:String,
+    price:Float,
+    passengers:Int,
+    luggages:Int,
+    doors:Int,
+    transmission:String,
+    includes:[String],
+    available:Boolean,
+    images:[String],
+    image:String,
+    ): Car
+    updateCar(
+    id: ID,
+    name:String,
+    model:String,
+    description:String,
+    price:Float,
+    passengers:Int,
+    luggages:Int,
+    doors:Int,
+    transmission:String,
+    includes:[String],
+    available:Boolean,
+    images:[String],
+    image:String,
+    ): Car
+    deleteCar(id: ID!): Car
+}
+type Car {
+    id: ID
+    name:String
+    model:String
+    description:String,  
+    price:Float
+    passengers:Int
+    luggages:Int
+    doors:Int
+    transmission:String
+    includes:[String]
+    available:Boolean
+    images:[String],
+    image:String,
+    rating:[Rating]
+    request:[Request]
+}
+type CarFilter {
+    q: String
+    id: ID
+    views: Int
+    views_lt: Int
+    views_lte: Int
+    views_gt: Int
+    views_gte: Int
+}
+type ListMetadata {
+    count: Int
+}
+scalar Date

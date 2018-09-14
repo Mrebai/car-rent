@@ -2,48 +2,51 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
-import ApolloClient from 'apollo-boost';
+import { ApolloClient } from 'apollo-client';
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+
 import { ApolloProvider } from 'react-apollo';
-import { AdminIndex } from '../../ui/admin'
 import buildGraphQLProvider from 'ra-data-graphql-simple';
-import {
-  BrowserRouter, Route, Switch,
-} from 'react-router-dom';
+
 import { Accounts } from 'meteor/accounts-base';
+import AdminIndex from '../../ui/admin';
 import App from '../../ui/App';
-// http link
+
+
+const httpLink = createHttpLink({
+  uri: '/graphql',
+});
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = Accounts._storedLoginToken();
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
 
 const client = new ApolloClient({
-  uri: '/graphql',
-  request: operation => operation.setContext(() => ({
-    headers: {
-      authorization: Accounts._storedLoginToken(),
-    },
-  })),
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
 });
 
 
 Meteor.startup(() => {
-  buildGraphQLProvider({ client }).then(data => render(
+  render(
+    <ApolloProvider client={client}>
+      <div>
 
-    <BrowserRouter>
+        <App />
+      </div>
 
-      <Switch>
-        <Route
-          path="/admin"
-          render={() => <AdminIndex data={data} />
-                    }
-        />
-        <Route render={match => (
-          <ApolloProvider client={client}>
-            <App client={client} />
-          </ApolloProvider>
-        )}
-        />
-      </Switch>
-    </BrowserRouter>,
-
-
+    </ApolloProvider>,
     document.getElementById('app'),
-  ));
+  );
 });

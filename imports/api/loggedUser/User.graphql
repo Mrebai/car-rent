@@ -1,0 +1,14 @@
+type LoggerUser {
+  _id: ID
+  id:String
+  email: String
+  userName: String
+  picture:[String] 
+  request:[Request]
+  rating:[Rating]
+}
+
+  type Query {
+  user: LoggerUser
+
+}

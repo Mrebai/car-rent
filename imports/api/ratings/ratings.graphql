@@ -1,0 +1,48 @@
+extend type Query {
+    Rating(id: ID!): Rating
+    allRatings(page: Int, perPage: Int, sortField: String, sortOrder: String, filter: String): [Rating]
+    _allRatingsMeta(page: Int, perPage: Int, sortField: String, sortOrder: String, filter: String): ListMetadata
+}
+extend type Mutation {
+    createRating(
+    driving:Int,
+    practicality:Int,
+    carInterior:Int,
+    comment: String,
+    user_id: ID
+    car_id: ID
+    ): Rating
+    updateRating(
+    id: ID,
+    driving:Int,
+    practicality:Int,
+    carInterior:Int,
+    comment: String,
+    user_id: ID
+    car_id: ID
+    ): Rating
+
+    deleteRating(id: ID!): Rating
+}
+type Rating {
+    id: ID,
+    driving:Int,
+    practicality:Int,
+    carInterior:Int,
+    comment: String,
+    user_id: ID
+    car_id: ID
+}
+type RatingFilter {
+    q: String
+    id: ID
+    title: String
+    views: Int
+    views_lt: Int
+    views_lte: Int
+    views_gt: Int
+    views_gte: Int
+    user_id: ID
+    car_id: ID
+}
+

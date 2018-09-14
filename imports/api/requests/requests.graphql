@@ -1,0 +1,54 @@
+extend type Query {
+    Request(id: ID!): Request
+    allRequests(page: Int, perPage: Int, sortField: String, sortOrder: String, filter: String): [Request]
+    _allRequestsMeta(page: Int, perPage: Int, sortField: String, sortOrder: String, filter: String): ListMetadata
+}
+extend type Mutation {
+    createRequest(
+    pickupAddress:String,
+    pickupDate:String,
+    pickupTime: String,
+    dropOffAddress: String,
+    dropOffDate: String,
+    dropOffTime: String,
+    user_id: ID
+    car_id: ID
+    ): Request
+    updateRequest(
+    id: ID,
+    pickupAddress:String,
+    pickupDate:String,
+    pickupTime: String,
+    dropOffAddress: String,
+    dropOffDate: String,
+    dropOffTime: String,
+    user_id: ID
+    car_id: ID
+    ): Request
+
+    deleteRequest(id: ID!): Request
+}
+type Request {
+    id: ID,
+    pickupAddress:String,
+    pickupDate:String,
+    pickupTime: String,
+    dropOffAddress: String,
+    dropOffDate: String,
+    dropOffTime: String,
+    confirmed:Boolean,
+    user_id: ID
+    car_id: ID
+}
+type RequestFilter {
+    q: String
+    id: ID
+    title: String
+    views: Int
+    views_lt: Int
+    views_lte: Int
+    views_gt: Int
+    views_gte: Int
+    user_id: ID
+    car_id: ID
+}
