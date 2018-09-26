@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import {
   Collapse,
   Navbar,
@@ -17,6 +18,18 @@ import {
 
 class MainNavBar extends React.Component {
   render() {
+    const itemStyle = {
+      textDecoration: 'none',
+      fontSize: '16px',
+      margin: ' 5px 0',
+      marginLeft: '5px',
+      color: '#000',
+    };
+
+    const linkStyle = {
+      textDecoration: 'none',
+      color: '#000',
+    };
     const { toggle, isOpen, width } = this.props;
     return (
       <div>
@@ -27,35 +40,19 @@ class MainNavBar extends React.Component {
                 && (
                 <Collapse isOpen={isOpen} navbar>
                   <Nav className="ml-auto" navbar>
-                    <NavItem>
-                      <NavLink href="/components/">Components</NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
-                    </NavItem>
-                    <UncontrolledDropdown nav inNavbar>
-                      <DropdownToggle nav caret>
+                    {
+                        this.props.menu.map((item, key) => (
+                          <NavItem style={itemStyle} key={key}>
+                            <Link style={linkStyle} to={/admin/ + item + "/1/10"}>
+                              <i className={this.props.icons[key]} />
+                              <span className="mr-2">
+                                {item}
+                              </span>
+                            </Link>
+                          </NavItem>
+                        ))
+                      }
 
-
-                                Options
-                      </DropdownToggle>
-                      <DropdownMenu right>
-                        <DropdownItem>
-
-
-                                    Option 1
-                        </DropdownItem>
-                        <DropdownItem>
-
-
-                                    Option 2
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem>
-                            Reset
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
                   </Nav>
                 </Collapse>
                 )
@@ -70,6 +67,7 @@ MainNavBar.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
+  icons: PropTypes.array.isRequired,
 };
 
 export default MainNavBar;

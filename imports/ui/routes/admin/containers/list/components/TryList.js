@@ -3,12 +3,12 @@ import TextField from './TextField';
 import List from '../index';
 import DataTable from '../DataTable';
 
-export default TryList = () => (
-  <List>
+export default TryList = props => (
+  <List {...props}>
     <DataTable>
       <TextField source="id" />
       <TextField source="name" />
-      <TextField source="age" />
+      <TextField source="model" />
     </DataTable>
   </List>
 

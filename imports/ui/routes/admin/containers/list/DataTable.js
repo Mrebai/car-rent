@@ -1,77 +1,112 @@
 import React from 'react';
 import { Table } from 'reactstrap';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import PropTypes from 'prop-types';
 
-export default class DataTable extends React.Component {
+import ListPagination from './pagination';
+import VerticalMenu from "../../coreUi/VerticalMenu";
+
+class DataTable extends React.Component {
   constructor(props) {
     super(props);
-
-
     this.state = {
       variable: [],
+      queryVars: ``,
+
     };
   }
 
   componentDidMount() {
     React.Children.forEach(this.props.children, (element) => {
       if (!React.isValidElement(element)) return;
-
       const { source } = element.props;
       const oldsState = this.state.variable;
       oldsState.push(source);
       this.setState({ variable: oldsState });
     });
+
+      let stringVars = '';
+      this.state.variable.forEach(item => stringVars += `${item} \n`);
+      this.setState({ queryVars: stringVars });
+
   }
 
+    res = () => (
+        (this.props.reference && this.state.queryVars.length >0)?
+            <Query query={
+                gql` query allQuery($page: Int,$perPage:Int){
+                  ${`all${this.props.reference}s`}(page:$page,perPage:$perPage){
+                  ${this.state.queryVars}
+              }}`} variables={{ page: parseInt(this.props.match.params.page-1) || 0, perPage: parseInt(this.props.match.params.perPage) || 10}}>
+                {({ loading, error, data }) => {
+                    if (loading) return "Loading...";
+                    if (error) return `Error! ${error.message}`;
+
+                    return (
+                        <div>
+                            <Table hover responsive>
+                                <thead>
+                                <tr>
+                                    {
+
+                                        this.state.variable.map((item, i) => (
+                                            <th key={i}>
+                                                {item}
+                                            </th>
+                                        ))
+                                    }
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {
+                                    (data[`all${this.props.reference}s`].map((data,key) => {
+                                        const result = React.Children.map(this.props.children, child => React.cloneElement(child, { data: data[child.props.source] }));
+                                        return (
+                                            <tr key={data.id || key}>
+                                                {result}
+                                            </tr>
+                                        );
+                                    }))
+                                }
+                                </tbody>
+                            </Table>
+                            <ListPagination name={this.props.name} reference={this.props.reference}  page={parseInt(this.props.match.params.page)} perPage={parseInt(this.props.match.params.perPage)}   />
+                        </div>
+                    );
+                }}
+            </Query>:null
+    );
+
   render() {
-    const data = [{
-      id: 1,
-      name: 'ra3',
-      age: 24,
-    }, {
-      id: 2,
-      name: 'ra3',
-      age: 24,
-    }, {
-      id: 3,
-      name: 'ra3',
-      age: 24,
-    }, {
-      id: 4,
-      name: 'ra3',
-      age: 24,
-    }];
     return (
-      <Table hover responsive>
-        {
-              console.log(this.state.variable)
-          }
-        <thead>
-          <tr>
+        <div>
             {
-
-                this.state.variable.map((item, i) => (
-                  <th key={i}>
-                    {item}
-                    {' '}
-                  </th>
-                ))
+                this.res()
             }
-          </tr>
-        </thead>
 
-        <tbody>
-          {
-            (data.map((data) => {
-              const result = React.Children.map(this.props.children, child => React.cloneElement(child, { data: data[child.props.source] }));
-              return (
-                <tr key={data.id}>
-                  {result}
-                </tr>
-              );
-            }))
-          }
-        </tbody>
-      </Table>
+        </div>
+
     );
   }
 }
+
+DataTable.propTypes = {
+    name: PropTypes.string,
+    page: PropTypes.string,
+    perPage: PropTypes.string,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+    ]),
+};
+
+DataTable.defaultProps = {
+    name:'items',
+    page: '1',
+    perPage: '10',
+    children: null
+};
+
+export default DataTable

@@ -7,9 +7,9 @@ import {
   NavItem,
   NavLink,
 } from 'reactstrap';
-import ListFilter from './filter';
 
-class ListNav extends Component {
+
+class CreateNav extends Component {
   render() {
     return (
       <div>
@@ -17,12 +17,14 @@ class ListNav extends Component {
           <NavbarBrand>{this.props.title}</NavbarBrand>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink href="/components/"><i className="fas fa-plus" /></NavLink>
+              <NavLink href="/components/"><i className="fas fa-eye" /></NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="https://github.com/reactstrap/reactstrap"><i className="fas fa-trash" /></NavLink>
             </NavItem>
-            <ListFilter />
+            <NavItem>
+              <NavLink href="https://github.com/reactstrap/reactstrap"><i className="fas fa-list" /></NavLink>
+            </NavItem>
           </Nav>
         </Navbar>
       </div>
@@ -30,8 +32,8 @@ class ListNav extends Component {
   }
 }
 
-ListNav.propTypes = {
+CreateNav.propTypes = {
   title: PropTypes.string,
 };
 
-export default ListNav;
+export default CreateNav;

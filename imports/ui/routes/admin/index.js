@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
+import PropTypes from 'prop-types';
 import VerticalMenu from './coreUi/VerticalMenu';
 import NevBar from './coreUi/NavBar';
-import TryList from './containers/list/components/TryList';
+
 
 class AdminIndex extends Component {
   constructor(props) {
     super(props);
-    this.state = { width: 0, isOpen: false };
+    this.state = {
+      width: 0, isOpen: false, menuItems: [], icons: [], refs: [],
+    };
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     this.toggle = this.toggle.bind(this);
   }
@@ -22,7 +25,19 @@ class AdminIndex extends Component {
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
-    console.log(`i say ${() =>this.state.hello}`);
+    React.Children.forEach(this.props.children, (element) => {
+      if (!React.isValidElement(element)) return;
+      const { name, icon, reference } = element.props;
+      const oldRef = this.state.refs;
+      const oldsState = this.state.menuItems;
+      const oldIcon = this.state.icons;
+
+      oldRef.push(reference);
+      oldsState.push(name);
+      (icon) ? oldIcon.push(icon) : oldIcon.push('fas fa-box');
+
+      this.setState({ menuItems: oldsState, icons: oldIcon, refs: oldRef });
+    });
   }
 
   componentWillUnmount() {
@@ -35,14 +50,17 @@ class AdminIndex extends Component {
 
 
   render() {
+    const children = React.Children.map(this.props.children, (child, i) => React.cloneElement(child, { reference: this.state.refs[i], title: this.state.menuItems[i] }));
     return (
       <div className="">
-        <NevBar toggle={this.toggle} isOpen={this.state.isOpen} width={this.state.width} />
+        <NevBar icons={this.state.icons} menu={this.state.menuItems} toggle={this.toggle} isOpen={this.state.isOpen} width={this.state.width} />
 
         <Row>
-          <VerticalMenu isOpen={this.state.isOpen} width={this.state.width} />
+          <VerticalMenu icons={this.state.icons} menu={this.state.menuItems} isOpen={this.state.isOpen} width={this.state.width} />
           <Col>
-            <TryList />
+            {
+                children
+            }
           </Col>
         </Row>
       </div>
@@ -50,4 +68,15 @@ class AdminIndex extends Component {
   }
 }
 
+
+AdminIndex.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+};
+
+AdminIndex.defaultProps = {
+  children: null,
+};
 export default AdminIndex;
