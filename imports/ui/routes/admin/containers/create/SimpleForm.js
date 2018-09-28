@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'reactstrap';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { Mutation  } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { Button, Form} from 'reactstrap';
 
@@ -15,22 +15,60 @@ class SimpleForm extends React.Component {
         type : [],
         values: [],
         mutation: ``,
-        reference: this.props.reference
+        reference: ''
     };
     this.getRef = this.getRef.bind(this);
     this.updateRef = this.updateRef.bind(this);
   }
 
   componentDidMount(){
+     this.setState({ reference: this.props.reference});
+
 
   }
 
-  buildQuery = () => {
+  buildQuery = () =>{
+      const type2 = this.state.type.join(` `);
+      const vars = this.state.values.join(` `);
+      const mymutation=
+              `
+          mutation create${ this.props.reference}(
+            ${type2}
+          ){
+            create${ this.props.reference}(
+              ${vars}
+            ){
+                id
+            }
+          }
+        `
 
+      ;
 
+      return (
+          (this.state.type.length > 0 && this.state.values.length > 0 && this.props.reference.length > 0)?
+              <Mutation mutation={gql`${mymutation}`}>
+                  {(mutation, { data }) => (
+                      <div>
+                          hi
+                          {
+                              console.log(mymutation)
+                          }
+                          <Button onClick={() =>{
 
-      console.log(this.state.mutation)
-  };
+                              let payload = {};
+                              this.state.refs.forEach(item => payload[item.source]= item.value );
+                              console.log(mutation);
+                              mutation({ variables: {...payload} });
+                          }
+                          } >Submit</Button>
+                      </div>
+                  )}
+              </Mutation>: null
+      )
+  }
+
+  ;
 
     getRef = ( source, type) => {
         // setup refs
@@ -49,6 +87,8 @@ class SimpleForm extends React.Component {
 
         this.setState({ refs: oldRefs, type:oldType, values:oldValues });
 
+
+
     };
 
     updateRef = (source , val) => {
@@ -56,39 +96,31 @@ class SimpleForm extends React.Component {
         const index = oldRefs.findIndex((item) => item.source === source);
         oldRefs[index].value = val;
         this.setState({ refs: oldRefs });
-        console.log( this.state.type )
-    };
-
-    submitForm = () => {
 
     };
+
+
+
+
+
     render() {
         const result = React.Children.map(this.props.children, child => React.cloneElement(child, { getRef:this.getRef, updateRef:this.updateRef }));
-        const type = this.state.type.join(` `);
-        const vars = this.state.values.join(` `);
-        const mutation = `
-          mutation create${this.props.reference}(
-            ${type}
-          ){
-            create${this.props.reference}(
-              ${vars}
-            )
-          }
-        `
-        ;
 
 
     return (
-        <Form >
+        <div>
+            <div>
 
-            {
-                result
-            }
-            {
-               console.log(mutation)
-            }
-            <Button onClick={() => this.submitForm()}>Submit</Button>
-        </Form>
+                <Form>
+                    {result}
+                    {this.buildQuery()}
+
+                </Form>
+            </div>
+
+        </div>
+
+
 
     );
   }
@@ -106,7 +138,7 @@ SimpleForm.propTypes = {
 };
 
 SimpleForm.defaultProps = {
-  reference:'',
+
   name: 'items',
   page: '1',
   perPage: '10',

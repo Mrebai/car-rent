@@ -22,16 +22,14 @@ class Create extends Component {
 
 
   render() {
-    const children = React.Children.map(this.props.children, (child) => React.cloneElement(child, {name: this.props.name, reference: this.props.reference, match: this.props.match }));
+    const children = React.Children.map(this.props.children, (child) => React.cloneElement(child, {name: this.props.name, reference:this.props.reference, match: this.props.match }));
     return (
       <div>
         <CreateNav title={this.props.title} />
         {
                     children
                 }
-          {
-              console.log(this.props.reference)
-          }
+
       </div>
     );
   }
