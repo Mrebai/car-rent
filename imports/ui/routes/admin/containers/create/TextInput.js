@@ -6,12 +6,12 @@ import {
 class TextInput extends Component {
   constructor(props) {
     super(props);
-    this.state = { inputVal: '' };
+    this.state = { inputVal: (this.props.defVal)? this.props.defVal : ''};
     this.updateValue = this.updateValue.bind(this);
   }
 
   componentDidMount() {
-    this.props.getRef( this.props.source, 'String');
+      (!this.props.defVal)? this.props.getRef( this.props.source, 'String'):null;
   }
 
   updateValue = (e) => {

@@ -50,10 +50,6 @@ class SimpleForm extends React.Component {
               <Mutation mutation={gql`${mymutation}`}>
                   {(mutation, { data }) => (
                       <div>
-                          hi
-                          {
-                              console.log(mymutation)
-                          }
                           <Button onClick={() =>{
 
                               let payload = {};

@@ -74,6 +74,11 @@ export default {
         images,
         image,
       }) {
+        console.log({
+            name,
+            model,
+            id,
+        });
       cars.update({ _id: id }, {
         $set: {
           name,
@@ -90,6 +95,7 @@ export default {
           image,
         },
       });
+
       return cars.findOne({ _id: id });
     },
     deleteCar(obj, { id }) {

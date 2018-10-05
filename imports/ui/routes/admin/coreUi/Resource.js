@@ -8,7 +8,7 @@ class Resource extends Component {
   }
 
   render() {
-    const { List, Create } = { ...this.props };
+    const { List, Create, Update } = { ...this.props };
 
     return (
       <div>
@@ -17,6 +17,12 @@ class Resource extends Component {
             exact
             path={`/admin/${this.props.name}` + '/new'}
             render={match => <Create match={match.match} {...this.props} />}
+          />
+
+          <Route
+            exact
+            path={`/admin/${this.props.name}` + '/update/:id'}
+            render={match => <Update match={match.match} {...this.props} />}
           />
 
           <Route

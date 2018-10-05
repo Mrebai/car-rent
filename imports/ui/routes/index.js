@@ -7,6 +7,8 @@ import AdminIndex from './admin';
 import Resorce from './admin/coreUi/Resource';
 import TryList from './admin/containers/list/components/TryList';
 import TryCreate from './admin/containers/create/component/TryCreate';
+import TryUpdate from './admin/containers/update/component/TryUpdate';
+
 
 export default RouteIndex = () => (
   <div className="">
@@ -17,8 +19,8 @@ export default RouteIndex = () => (
           path="/admin"
           render={router => (
             <AdminIndex match={router.match}>
-              <Resorce icon="fab fa-500px" Create={TryCreate} List={TryList}  name="posts" reference="Car" />
-              <Resorce List={TryList} Create={TryCreate} name="posts2" reference="Car" />
+              <Resorce icon="fab fa-500px" Create={TryCreate} List={TryList} Update={TryUpdate}  name="posts" reference="Car" />
+              <Resorce List={TryList} Create={TryCreate} name="posts2" reference="Car" Update={TryUpdate} />
             </AdminIndex>
           )}
         />
