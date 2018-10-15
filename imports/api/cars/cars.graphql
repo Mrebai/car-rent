@@ -1,6 +1,6 @@
 extend type Query {
     Car(id: ID!): Car
-    allCars(page: Int, perPage: Int, sortField: String, sortOrder: String, ): [Car]
+    allCars(page: Int, perPage: Int, sortField: String, sortOrder: String,q:String ): [Car]
     _allCarsMeta(page: Int, perPage: Int, sortField: String, sortOrder: String,): ListMetadata
 }
 type Mutation {

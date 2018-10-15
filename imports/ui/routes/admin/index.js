@@ -52,10 +52,10 @@ class AdminIndex extends Component {
   render() {
     const children = React.Children.map(this.props.children, (child, i) => React.cloneElement(child, { reference: this.state.refs[i], title: this.state.menuItems[i] }));
     return (
-      <div className="">
+      <div style={{ backgroundColor:'#F8F9FA' , minWidth:'100%', minHeight: '100%', position: 'absolute'}}>
         <NevBar icons={this.state.icons} menu={this.state.menuItems} toggle={this.toggle} isOpen={this.state.isOpen} width={this.state.width} />
 
-        <Row>
+        <Row >
           <VerticalMenu icons={this.state.icons} menu={this.state.menuItems} isOpen={this.state.isOpen} width={this.state.width} />
           <Col>
             {

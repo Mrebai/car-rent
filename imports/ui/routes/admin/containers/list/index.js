@@ -4,10 +4,20 @@ import ListNav from './ListNav';
 
 
 class List extends Component {
+    constructor(props){
+      super(props);
+      this.searchVars = this.searchVars.bind(this);
+      this.state = {q :''}
+    }
+    searchVars = (val) => {
+      this.setState({q:val})
+    };
+
   render() {
-    const children = React.Children.map(this.props.children, (child, i) => React.cloneElement(child, { name: this.props.name, reference: this.props.reference, match: this.props.match }));
+    const children = React.Children.map(this.props.children, (child, i) => React.cloneElement(child, {q:this.state.q, name: this.props.name, reference: this.props.reference, match: this.props.match }));
     return (
       <div>
+        <ListNav name={this.props.name} searchVars={this.searchVars} title={this.props.title} />
         {
             children
           }

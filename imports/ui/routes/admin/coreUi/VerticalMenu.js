@@ -6,17 +6,14 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-const itemStyle = {
-  textDecoration: 'none',
-  fontSize: '16px',
-  margin: ' 5px 0',
-  marginLeft: '5px',
-  color: '#FFFFFF',
-};
 
 const linkStyle = {
   textDecoration: 'none',
   color: '#FFFFFF',
+  fontSize: '1.2rem',
+  margin:'.5rem 1rem',
+  marginRight:'0',
+
 };
 
 const VerticalMenu = ({
@@ -27,21 +24,22 @@ const VerticalMenu = ({
       (width > 768 && !isOpen
         && (
         <Fragment>
+
           <Col
+            className="m-0"
             sm={1}
             style={{
-              backgroundColor: 'blue', minHeight: '100%', position: 'absolute', margin: '0 4px', maxWidth: '70px',
+              backgroundColor: '#323539', minHeight: '100vh', margin: '0 4px', maxWidth: '70px',
             }}
-          />
-          <Col className="m-0" sm={1} style={{ backgroundColor: 'red', minHeight: '100%', maxWidth: '70px' }}>
+          >
             <Nav vertical>
               {
                 icons.map((icon, key) => (
-                  <NavItem style={itemStyle} key={key}>
-                    <Link style={linkStyle} to={`/admin/${menu[key]}/1/10`}>
+                  <Link style={linkStyle}  key={key} to={`/admin/${menu[key]}/1/10`}>
+                    <NavItem>
                       <i className={icon} />
-                    </Link>
-                  </NavItem>
+                    </NavItem>
+                  </Link>
                 ))
               }
 
@@ -55,22 +53,25 @@ const VerticalMenu = ({
       (width > 768 && isOpen
         && (
         <Fragment>
+
           <Col
+            className="m-0"
             sm={2}
             style={{
-              backgroundColor: 'blue', minHeight: '100%', position: 'absolute', margin: '0 6px',
+              backgroundColor: '#323539', minHeight: '100vh', margin: '0 4px',
             }}
-          />
-          <Col className="m-0" sm={2} style={{ backgroundColor: 'red', minHeight: '100%' }}>
+          >
             <Nav vertical>
               {
                     icons.map((icon, key) => (
-                      <NavItem key={key} style={itemStyle}>
-                        <Link style={linkStyle} to={`/admin/${menu[key]}/1/10`}>
+                      <Link style={linkStyle} to={`/admin/${menu[key]}/1/10`} key={key}>
+                        <NavItem>
+
                           <i className={icon} />
-                          <span className="ml-1">{menu[key]}</span>
-                        </Link>
-                      </NavItem>
+                          <span className="ml-2">{menu[key]}</span>
+
+                        </NavItem>
+                      </Link>
                     ))
                 }
 

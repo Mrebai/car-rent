@@ -1,37 +1,39 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
   Navbar,
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import ListFilter from './filter';
 
 class ListNav extends Component {
   render() {
     return (
-      <div>
+      <Fragment>
         <Navbar color="light" light expand>
           <NavbarBrand>{this.props.title}</NavbarBrand>
           <Nav className="ml-auto" navbar>
-            <NavItem>
-              <NavLink href="/components/"><i className="fas fa-plus" /></NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="https://github.com/reactstrap/reactstrap"><i className="fas fa-trash" /></NavLink>
-            </NavItem>
-            <ListFilter />
+            <Link to={`/admin/${this.props.name}/new`}>
+              <NavItem>
+                <span className="nav-link">
+                  <i className="fas fa-plus" />
+                </span>
+              </NavItem>
+            </Link>
+            <ListFilter searchVars={this.props.searchVars} />
           </Nav>
         </Navbar>
-      </div>
+      </Fragment>
     );
   }
 }
 
 ListNav.propTypes = {
   title: PropTypes.string,
+  searchVars: PropTypes.func.isRequired,
 };
 
 export default ListNav;

@@ -3,6 +3,7 @@ import { Table } from 'reactstrap';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
+import {withRouter} from 'react-router-dom'
 
 import ListPagination from './pagination';
 import VerticalMenu from "../../coreUi/VerticalMenu";
@@ -19,11 +20,13 @@ class DataTable extends React.Component {
 
   componentDidMount() {
     React.Children.forEach(this.props.children, (element) => {
-      if (!React.isValidElement(element)) return;
+      if (!React.isValidElement(element) ) return;
       const { source } = element.props;
-      const oldsState = this.state.variable;
-      oldsState.push(source);
-      this.setState({ variable: oldsState });
+      if(source){
+        const oldsState = this.state.variable;
+        oldsState.push(source);
+        this.setState({ variable: oldsState });
+      }
     });
 
       let stringVars = '';
@@ -35,21 +38,20 @@ class DataTable extends React.Component {
     res = () => (
         (this.props.reference && this.state.queryVars.length >0)?
             <Query query={
-                gql` query allQuery($page: Int,$perPage:Int){
-                  ${`all${this.props.reference}s`}(page:$page,perPage:$perPage){
+                gql` query  ${`all${this.props.reference}s`}($page: Int,$perPage:Int,$q:String){
+                  ${`all${this.props.reference}s`}(page:$page,perPage:$perPage, q:$q){
                   ${this.state.queryVars}
-              }}`} variables={{ page: parseInt(this.props.match.params.page-1) || 0, perPage: parseInt(this.props.match.params.perPage) || 10}}>
+              }}`} variables={{ page: parseInt(this.props.match.params.page-1) || 0, perPage: parseInt(this.props.match.params.perPage) || 10, q:this.props.q }}>
                 {({ loading, error, data }) => {
                     if (loading) return "Loading...";
                     if (error) return `Error! ${error.message}`;
 
                     return (
                         <div>
-                            <Table hover responsive>
+                            <Table size="sm" hover responsive>
                                 <thead>
                                 <tr>
                                     {
-
                                         this.state.variable.map((item, i) => (
                                             <th key={i}>
                                                 {item}
@@ -62,7 +64,7 @@ class DataTable extends React.Component {
                                 <tbody>
                                 {
                                     (data[`all${this.props.reference}s`].map((data,key) => {
-                                        const result = React.Children.map(this.props.children, child => React.cloneElement(child, { data: data[child.props.source] }));
+                                        const result = React.Children.map(this.props.children, child => React.cloneElement(child, { data: data[child.props.source], id:data.id, name:this.props.name, reference:this.props.reference}));
                                         return (
                                             <tr key={data.id || key}>
                                                 {result}
@@ -109,4 +111,4 @@ DataTable.defaultProps = {
     children: null
 };
 
-export default DataTable
+export default withRouter(DataTable)

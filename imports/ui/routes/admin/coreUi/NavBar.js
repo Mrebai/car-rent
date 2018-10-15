@@ -18,17 +18,14 @@ import {
 
 class MainNavBar extends React.Component {
   render() {
-    const itemStyle = {
-      textDecoration: 'none',
-      fontSize: '16px',
-      margin: ' 5px 0',
-      marginLeft: '5px',
-      color: '#000',
-    };
 
     const linkStyle = {
-      textDecoration: 'none',
-      color: '#000',
+        textDecoration: 'none',
+        color: '#323539' ,
+        fontSize: '1.2rem',
+        margin:'.5rem 1rem',
+        marginRight:'0',
+
     };
     const { toggle, isOpen, width } = this.props;
     return (
@@ -42,14 +39,14 @@ class MainNavBar extends React.Component {
                   <Nav className="ml-auto" navbar>
                     {
                         this.props.menu.map((item, key) => (
-                          <NavItem style={itemStyle} key={key}>
-                            <Link style={linkStyle} to={/admin/ + item + "/1/10"}>
+                          <Link style={linkStyle} to={`${/admin/ + item}/1/10`} key={key}>
+                            <NavItem >
                               <i className={this.props.icons[key]} />
                               <span className="mr-2">
                                 {item}
                               </span>
-                            </Link>
-                          </NavItem>
+                            </NavItem>
+                          </Link>
                         ))
                       }
 

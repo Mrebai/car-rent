@@ -16,6 +16,7 @@ class ListFilter extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
+      inputVal:'',
       isOpen: false,
     };
   }
@@ -26,6 +27,11 @@ class ListFilter extends Component {
     });
   }
 
+    updateValue = (e) => {
+        this.setState({inputVal: e.target.value});
+        this.props.searchVars(e.target.value)
+    };
+
   render() {
     return (
       <UncontrolledDropdown nav inNavbar>
@@ -34,11 +40,9 @@ class ListFilter extends Component {
         </DropdownToggle>
         <DropdownMenu right>
           <Form>
-
                 <FormGroup>
-                    <Input bsSize="sm" type="search" name="search" id="exampleSearch" placeholder="search placeholder" />
+                    <Input  value={this.state.inputVal} onChange={(e) => this.updateValue(e)} bsSize="sm" type="search" name="search" id="exampleSearch" placeholder="search placeholder" />
                 </FormGroup>
-
           </Form>
         </DropdownMenu>
       </UncontrolledDropdown>

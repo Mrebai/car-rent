@@ -6,6 +6,7 @@ export default {
 
   Query: {
     allCars(obj, args) {
+        console.log(args.q)
       return cars.find({}, { skip: args.perPage * args.page, limit: args.perPage }).fetch();
     },
     _allCarsMeta(obj, args) {

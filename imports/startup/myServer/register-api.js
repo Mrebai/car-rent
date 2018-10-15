@@ -19,7 +19,7 @@ import requestResolvers from '../../api/requests/resolvers';
 import allUsersSchema from '../../api/users/users.graphql';
 
 
-// sssxssssssssssssssssssssssssssssssssssgssss
+// sssxsssssssssssssssssssssssssssssssssssgssss
 
 const typeDefs = [UserSchema, carSchema, ratingSchema, requestSchema, allUsersSchema];
 const resolvers = merge(UserResolvers, carResolvers, ratingResolvers,
