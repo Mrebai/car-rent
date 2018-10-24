@@ -6,9 +6,12 @@ import ListNav from './ListNav';
 class List extends Component {
     constructor(props){
       super(props);
+      // get search params
       this.searchVars = this.searchVars.bind(this);
+      // search field
       this.state = {q :''}
     }
+    // get search far from child component
     searchVars = (val) => {
       this.setState({q:val})
     };

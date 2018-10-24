@@ -7,7 +7,7 @@ import {
   NavItem,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import ListFilter from './filter';
+import ListFilter from './Filter';
 
 class ListNav extends Component {
   render() {
@@ -32,6 +32,7 @@ class ListNav extends Component {
 }
 
 ListNav.propTypes = {
+  name: PropTypes.string,
   title: PropTypes.string,
   searchVars: PropTypes.func.isRequired,
 };

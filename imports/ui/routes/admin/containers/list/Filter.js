@@ -1,4 +1,5 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   DropdownItem,
   NavbarToggler,
@@ -9,6 +10,7 @@ import {
   DropdownToggle,
   Button, Form, FormGroup, Label, Input, FormText,
 } from 'reactstrap';
+import List from "./index";
 
 class ListFilter extends Component {
   constructor(props) {
@@ -50,5 +52,10 @@ class ListFilter extends Component {
     );
   }
 }
+
+ListFilter.propTypes = {
+  searchVars: PropTypes.func.isRequired,
+};
+
 
 export default ListFilter;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   FormGroup, Label, Input,
 } from 'reactstrap';
@@ -10,10 +11,12 @@ class TextInput extends Component {
     this.updateValue = this.updateValue.bind(this);
   }
 
+  // get sources from each child
   componentDidMount() {
       (!this.props.defVal)? this.props.getRef( this.props.source, 'String'):null;
   }
 
+  // update value on change
   updateValue = (e) => {
     this.setState({inputVal: e.target.value});
     this.props.updateRef(this.props.source,e.target.value)
@@ -30,4 +33,8 @@ class TextInput extends Component {
   }
 }
 
+TextInput.propTypes = {
+  updateRef: PropTypes.func,
+  getRef:PropTypes.func,
+};
 export default TextInput;

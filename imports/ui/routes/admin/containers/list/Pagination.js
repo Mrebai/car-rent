@@ -14,10 +14,11 @@ class ListPagination extends Component {
         value : this.props.perPage
     }
   };
+
+  // go to clicked page
   changeOpt = (event) => {
       this.props.history.push(`/admin/${this.props.name}/${this.props.page}/${event.target.value}`);
       this.setState({value: event.target.value});
-
   };
 
   itemsMete = () =>
@@ -33,13 +34,19 @@ class ListPagination extends Component {
           const count = data[`_all${this.props.reference}sMeta`].count;
           const pages = Math.ceil(count/this.props.perPage);
 
+        // return page
           const checkPage = (page) =>
               (page <= pages)?
                   <PaginationItem>
                   <Link className="page-link" to={`${`/admin/${this.props.name}/${page}`}/${this.props.perPage}`}>{page}</Link>
-                 </PaginationItem>: null
+                 </PaginationItem>: (page == this.props.page)?
+                <PaginationItem disabled>
+                  <Link  className="page-link" to={`${`/admin/${this.props.name}/${page}`}/${this.props.perPage}`}>{page}</Link>
+                </PaginationItem>
+                :null
           ;
 
+             // check for negative value
           const checkPageNeg = (page) =>
               (page >= 1)?
                   <PaginationItem>
@@ -54,9 +61,7 @@ class ListPagination extends Component {
                                   <Row>
                                       <Col xs="9">
                                           <Pagination aria-label="Page navigation example">
-
                                               {
-
                                                   // prev Btn
                                                   (!this.props.page || this.props.page == 1) ?
                                                       <PaginationItem disabled>
@@ -81,8 +86,19 @@ class ListPagination extends Component {
                                               {
                                                   checkPage(this.props.page + 3)
                                               }
+                                            {
+                                              // Next Btn
+                                              (!this.props.page || this.props.page == Math.ceil(count/this.props.perPage)) ?
+                                                <PaginationItem disabled>
+                                                  <Link className="page-link" to={`${`/admin/${this.props.name}/${this.props.page + 1}`}/${this.props.perPage}`}>Next</Link>
+                                                </PaginationItem>:
+                                                <PaginationItem >
+                                                  <Link className="page-link" to={`${`/admin/${this.props.name}/${this.props.page + 1}`}/${this.props.perPage}`}>Next</Link>
+                                                </PaginationItem>
+                                            }
                                           <FormGroup>
 
+                                           {/*per page array input*/}
                                               <Input type="select" onChange={this.changeOpt} value={this.state.value} name="select" id="exampleSelect">
                                                   <option>5</option>
                                                   <option >10</option>
@@ -93,6 +109,8 @@ class ListPagination extends Component {
                                           </FormGroup>
                                           </Pagination>
                                       </Col>
+
+                                      {/*display */}
                                       <Col>
                                           <div className={'page-item'} style={{display:"flex" , justifyContent:' flex-end'}}> <p>{"page " + this.props.page + "/" + Math.ceil(count/this.props.perPage)}</p> </div>
                                       </Col>
@@ -118,6 +136,7 @@ class ListPagination extends Component {
 
 VerticalMenu.propTypes = {
   name: PropTypes.string,
+  reference: PropTypes.string,
   page: PropTypes.number,
   perPage: PropTypes.number,
 };

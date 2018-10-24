@@ -5,8 +5,8 @@ import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import {withRouter} from 'react-router-dom'
 
-import ListPagination from './pagination';
-import VerticalMenu from "../../coreUi/VerticalMenu";
+import ListPagination from './Pagination';
+
 
 class DataTable extends React.Component {
   constructor(props) {
@@ -19,6 +19,7 @@ class DataTable extends React.Component {
   }
 
   componentDidMount() {
+    // get the source props from children and map them to state
     React.Children.forEach(this.props.children, (element) => {
       if (!React.isValidElement(element) ) return;
       const { source } = element.props;
@@ -29,6 +30,7 @@ class DataTable extends React.Component {
       }
     });
 
+      // construct the query vars in the state
       let stringVars = '';
       this.state.variable.forEach(item => stringVars += `${item} \n`);
       this.setState({ queryVars: stringVars });
@@ -63,6 +65,7 @@ class DataTable extends React.Component {
 
                                 <tbody>
                                 {
+                                  // pass data to children
                                     (data[`all${this.props.reference}s`].map((data,key) => {
                                         const result = React.Children.map(this.props.children, child => React.cloneElement(child, { data: data[child.props.source], id:data.id, name:this.props.name, reference:this.props.reference}));
                                         return (

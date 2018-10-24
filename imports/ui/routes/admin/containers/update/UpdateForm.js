@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'reactstrap';
+import { withRouter } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Mutation,Query  } from 'react-apollo';
 import PropTypes from 'prop-types';
@@ -79,10 +79,9 @@ class UpdateForm extends React.Component {
                           <Button onClick={() =>{
                               let payload = {};
                               this.state.refs.forEach(item => payload[item.source]= item.value );
-                              console.log(this.state.refs);
-                              mutation({ variables: {...payload , id:this.props.match.params.id} });
+                              mutation({ variables: {...payload , id:this.props.match.params.id} , refetchQueries: [`all${this.props.reference}s`]}).then(()=> this.props.history.goBack());
                           }
-                          }> Submit </Button>
+                          }> Update </Button>
                       </div>
                   )}
               </Mutation>: null
@@ -164,4 +163,4 @@ UpdateForm.defaultProps = {
   children: null,
 };
 
-export default UpdateForm;
+export default withRouter(UpdateForm);

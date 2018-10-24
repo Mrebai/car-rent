@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Col, Nav, NavItem, NavLink,
 } from 'reactstrap';
@@ -84,12 +83,5 @@ const VerticalMenu = ({
     }
   </Fragment>
 );
-
-VerticalMenu.propTypes = {
-  width: PropTypes.number.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  icons: PropTypes.array.isRequired,
-  menu: PropTypes.array.isRequired,
-};
 
 export default VerticalMenu;

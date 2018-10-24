@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import CreateNav from "./createNav";
+import CreateNav from './createNav';
 
 
 class Create extends Component {
   constructor(props) {
     super(props);
-    this.state = { source: [] , refs:[] };
-
+    this.state = { source: [], refs: [] };
   }
 
   componentDidMount() {
+    // get sources from children
     React.Children.forEach(this.props.children, (element) => {
       if (!React.isValidElement(element)) return;
       const { source } = element.props;
@@ -22,14 +22,11 @@ class Create extends Component {
 
 
   render() {
-    const children = React.Children.map(this.props.children, (child) => React.cloneElement(child, {name: this.props.name, reference:this.props.reference, match: this.props.match }));
+    const children = React.Children.map(this.props.children, child => React.cloneElement(child, { name: this.props.name, reference: this.props.reference, match: this.props.match }));
     return (
       <div>
         <CreateNav title={this.props.title} />
-        {
-                    children
-                }
-
+        {children}
       </div>
     );
   }
